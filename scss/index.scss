@@ -1,0 +1,572 @@
+@use "sass:math";
+
+@font-face {
+  font-family: BananaPrince;
+  src: url(BananaPrince.ttf);
+}
+
+body {
+  background-color: black;
+  color: white;
+  align-content: center;
+  transform-origin: top left;
+}
+
+@mixin banana-border {
+  border: 6px double #b71e7b;
+  border-radius: 4px;
+  background-color: #f7d8a5;
+}
+
+@mixin frames($filebase, $framenum, $alternate: false) {
+  @if $alternate {
+    @for $i from 1 through $framenum {
+      #{math.div(100,(2*$framenum)) * ($i - 1)}% {
+        content: url("#{$filebase}#{$i}.png");
+      }
+    }
+    @for $i from ($framenum - 1) through 1 {
+      #{math.div(100,(2*$framenum)) * (2*$framenum - $i)}% {
+        content: url("#{$filebase}#{$i}.png");
+      }
+    }
+  } @else {
+    @for $i from 1 through $framenum {
+      #{math.div(100,($framenum + 1)) * ($i - 1)}% {
+        content: url("#{$filebase}#{$i}.png");
+      }
+    }
+    100% {
+      content: url("#{$filebase}1.png");
+    }
+  }
+}
+
+select {
+  font-size: 1.5em;
+  image-rendering: pixelated;
+  padding-left: 1em;
+  padding-right: 1.5em;
+  appearance: none;
+  background: url("ArrowDown.png") no-repeat right;
+  background-color: #f7d8a5;
+  background-position-x: calc(100% - 8px);
+  background-position-y: calc(50% + 4px);
+  background-size: 16px;
+  line-height: 1;
+  @include banana-border;
+}
+
+#main {
+  max-width: 1200px;
+  margin-left: calc(50% - 600px);
+}
+
+select {
+  font-family: BananaPrince;
+}
+
+#title {
+  color: white;
+  font-family: BananaPrince;
+  text-align: center;
+}
+
+#title h2 {
+  padding: 8px;
+  padding-bottom: 32px;
+}
+
+#title img {
+  transform: scale(3);
+  image-rendering: pixelated;
+  margin-top: 64px;
+  margin-bottom: 32px;
+}
+
+#password {
+  display: flex;
+  justify-content: center;
+}
+
+#chars {
+  display: flex;
+  justify-content: center;
+}
+
+#lilly {
+  display: inline;
+  position: absolute;
+  image-rendering: pixelated;
+  transform: scale(2) translate(-200px);
+}
+
+#prince-yeah {
+  display: inline;
+  position: absolute;
+  image-rendering: pixelated;
+  transform: scale(2) translate(200px);
+  animation: 1s infinite normal prince-yeah;
+}
+
+@keyframes prince-yeah {
+  @include frames(PrinceYeah, 3, true);
+}
+
+#stage-select {
+  justify-content: center;
+  display: flex;
+  padding: 24px;
+}
+
+#stage-dash {
+  font-size: 3em;
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+#stage-view {
+  display: flex;
+  justify-content: center;
+}
+
+#level-view {
+  padding: 12px;
+  transform: translate(4px);
+}
+
+#world-map {
+  padding: 12px;
+  transform: translate(-18px);
+}
+
+#world-map-img {
+  @include banana-border;
+}
+
+#level-view-img {
+  @include banana-border;
+}
+
+#prince-wm {
+  position: fixed;
+  animation: 0.5s infinite normal prince-wm;
+}
+
+@keyframes prince-wm {
+  @include frames(PrinceFront, 2);
+}
+
+
+#level-view {
+  width: 256px;
+  height: 240px;
+  display: inline;
+}
+
+#level-view-img {
+  position: absolute;
+}
+
+#ui {
+  position: absolute;
+  transform: translate(16px, 196px);
+  animation: 0.5s infinite normal ui;
+}
+
+@keyframes ui {
+  @include frames(UI, 3);
+}
+
+#weapon-name {
+  font-family: BananaPrince;
+  font-size: 7px;
+  color: black;
+  width: 80px;
+  position: absolute;
+  transform: translate(40px, 202px);
+}
+
+#prince-lv {
+  position: fixed;
+  animation: 0.5s infinite normal prince-lv;
+}
+
+@keyframes prince-lv {
+  @include frames(LVPrince, 3);
+}
+
+#all-treasures {
+  position: fixed;
+  transform: translate(176px, 197px);
+  object-position: 0px;
+  object-fit: none;
+  height: 32px;
+  animation: 0.5s infinite normal all-treasures;
+}
+
+@keyframes all-treasures {
+  @include frames(AllTreasures, 3);
+}
+
+@mixin stage-anim($world,$level) {
+  animation: 0.5s infinite normal stage#{$world}-#{$level};
+}
+
+@mixin stage-keyframes($img) {
+  @include frames(#{$img}-F, 3);
+}
+
+@mixin stage($world,$level) {
+  #stage-view img.stage#{$world}-#{$level} {
+    @include stage-anim($world,$level)
+  }
+
+  @keyframes stage#{$world}-#{$level} {
+    @include stage-keyframes("#{$world}-#{$level}")
+  }
+}
+
+@include stage(1,1);
+@include stage(1,2);
+@include stage(1,3);
+@include stage(2,1);
+@include stage(2,2);
+@include stage(2,3);
+@include stage(3,1);
+@include stage(3,2);
+@include stage(3,3);
+@include stage(4,1);
+@include stage(4,2);
+@include stage(4,3);
+@include stage(5,2);
+@include stage(5,3);
+@include stage(6,1);
+@include stage(6,2);
+@include stage(6,3);
+@include stage(7,1);
+@include stage(7,2);
+@include stage(7,3);
+
+#stage-view img.stage5-1 {
+  content: url("5-1-F1.png");
+}
+
+#equip-select {
+  display: flex;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+#equip-select select {
+  margin: 32px;
+  padding: 16px;
+  padding-right: 1.5em;
+}
+
+#treasure-select {
+  width: 320px;
+}
+
+#weapon-select {
+  width: 320px;
+}
+
+:root {
+  --weapon-duration-short: 0.4s, 1.5s;
+  --weapon-duration-mid: 0.4s, 2.25s;
+  --weapon-duration-mid2: 0.4s, 2.25s;
+  --weapon-duration-long: 0.4s, 3.0s;
+  --weapon-width-star: 0px;
+  --weapon-height-star: 0px;
+  --weapon-width-capsule: 6px;
+  --weapon-height-capsule: 6px;
+  --weapon-width-wave: 4px;
+  --weapon-height-wave: 24px;
+}
+
+.weapon-sprite {
+  position: fixed;
+}
+
+#weapon-sprites {
+  position: fixed;
+  clip-path: inset(196px 264px);
+}
+
+@mixin weapon-animation($type, $direction, $duration) {
+  animation-name: weapon-#{$type}, weapon-#{$direction}-#{$duration};
+  animation-duration: var(--weapon-duration-#{$duration});
+  animation-timing-function: steps(1, end);
+  animation-iteration-count: infinite;
+  animation-composition: add;
+  transform: translate(
+    calc(var(--weapon-width-#{$type}) + var(--plv-x) - 120px),
+    calc(-1*var(--weapon-height-#{$type}) + var(--plv-y) - 144px));
+}
+
+#weapon1 {
+  &.king-axe, &.grand-axe, &.magic {
+    @include weapon-animation(star, forward, short);
+  }
+  &.star-axe {
+    @include weapon-animation(star, upfork, short);
+  }
+  &.capsule, &.meteor {
+    @include weapon-animation(capsule, forward, short);
+  }
+  &.maxim {
+    @include weapon-animation(capsule, upfork, mid);
+  }
+  &.megalo, &.mercury {
+    @include weapon-animation(wave, forward, mid);
+  }
+  &.fold {
+    @include weapon-animation(wave, upfork, mid2);
+  }
+  &.cross-axe {
+    @include weapon-animation(wave, upfork, long);
+  }
+  &.grand-axe {
+    @include weapon-animation(star, forward, mid);
+  }
+  &.curse-axe, &.flash, &.kingship {
+    @include weapon-animation(wave, forward, long);
+  }
+  &.crusher {
+    @include weapon-animation(capsule, forward, mid);
+  }
+}
+
+#weapon2 {
+  &.star-axe {
+    @include weapon-animation(star, downfork, short);
+  }
+  &.magic, &.grand-axe {
+    @include weapon-animation(star, updiag, short);
+  }
+  &.maxim {
+    @include weapon-animation(capsule, downfork, mid);
+  }
+  &.meteor {
+    @include weapon-animation(capsule, updiag, short);
+  }
+  &.fold {
+    @include weapon-animation(wave, downfork, mid2);
+  }
+  &.cross-axe {
+    @include weapon-animation(wave, downfork, long);
+  }
+  &.grand-axe {
+    @include weapon-animation(star, updiag, mid);
+  }
+  &.mercury {
+    @include weapon-animation(wave, updiag, mid);
+  }
+  &.flash, &.kingship {
+    @include weapon-animation(wave, updiag, long);
+  }
+  &.crusher {
+    @include weapon-animation(capsule, updiag, mid);
+  }
+}
+
+#weapon3 {
+  &.grand-axe {
+    @include weapon-animation(star, downdiag, mid);
+  }
+  &.crusher {
+    @include weapon-animation(capsule, downdiag, mid);
+  }
+  &.kingship {
+    @include weapon-animation(wave, downdiag, long);
+  }
+}
+
+@keyframes weapon-star {
+  @include frames(WeaponStar, 2);
+}
+
+@keyframes weapon-capsule {
+  @include frames(WeaponCapsule, 3);
+}
+
+@keyframes weapon-wave {
+  @include frames(WeaponWave, 2);
+}
+
+@mixin weapon-direction(
+  $dx, $dy, $tx: 3, $x: 136, $y: 156, $start: 0, $end: 10) {
+  @for $i from 0 through ($end - $start) {
+    #{$tx * ($start + $i)}% {
+      transform: translate(
+        #{$x + $i * $dx}px,
+        #{$y + $i * $dy}px);
+    }
+  }
+}
+
+@mixin weapon-finish($start) {
+  #{$start}% {
+    visibility: hidden;
+  }
+
+  100% {
+    visibility: hidden;
+  }
+}
+
+@keyframes weapon-forward-short {
+  @include weapon-direction(4, 0);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-forward-mid {
+  @include weapon-direction(4, 0, $tx: 2, $end: 15);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-forward-long {
+  @include weapon-direction(4, 0, $tx: 1, $end: 30);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-updiag-short {
+  @include weapon-direction(4, -1);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-updiag-mid {
+  @include weapon-direction(4, -1, $tx: 2, $end: 15);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-updiag-long {
+  @include weapon-direction(4, -1, $tx: 1, $end: 30);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-downdiag-mid {
+  @include weapon-direction(4, 1, $tx: 2, $end: 15);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-downdiag-long {
+  @include weapon-direction(4, 1, $tx: 1, $end: 30);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-upfork-short {
+  @include weapon-direction(2, -2, $y: 140, $end: 5);
+  @include weapon-direction(4, 0, $x: 146, $y: 130, $start: 6);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-upfork-mid {
+  @include weapon-direction(2, 0, $tx:1.5, $y: 148, $end: 2);
+  @include weapon-direction(-1,-3, $tx:1.5, $y:146, $x:142, $start:4, $end:7);
+  @include weapon-direction(0,-3, $tx:1.5, $y:134, $x:138, $start:8, $end:14);
+  @include weapon-direction(2,-2, $tx:1.5, $y:112, $x:138, $start:15, $end:20);
+  @include weapon-direction(4,-1, $tx:1.5, $y:100, $x:154, $start:21, $end:26);
+  @include weapon-direction(3,3, $tx:1.5, $y:94, $x:178, $start:27, $end:32);
+  @include weapon-finish(49);
+}
+
+@keyframes weapon-upfork-mid2 {
+  @include weapon-direction(2, 0, $tx:1.5, $y: 148, $end: 2);
+  @include weapon-direction(-1,-3, $tx:1.5, $y:146, $x:142, $start:4, $end:7);
+  @include weapon-direction(0,-3, $tx:1.5, $y:134, $x:138, $start:8, $end:14);
+  @include weapon-direction(2,-2, $tx:1.5, $y:112, $x:138, $start:15, $end:20);
+  @include weapon-direction(4,-1, $tx:1.5, $y:100, $x:154, $start:21, $end:26);
+  @include weapon-direction(3,3, $tx:1.5, $y:94, $x:178, $start:27, $end:32);
+  @include weapon-direction(1,6, $tx:1.5, $y:112, $x:196, $start:33, $end:38);
+  @include weapon-direction(2,0, $tx:1.5, $y:148, $x:202, $start:39, $end:42);
+  @include weapon-finish(65);
+}
+
+@keyframes weapon-upfork-long {
+  @include weapon-direction(2, 0, $tx:1, $y: 148, $end: 2);
+  @include weapon-direction(-1,-3, $tx:1, $y:146, $x:142, $start:4, $end:7);
+  @include weapon-direction(0,-3, $tx:1, $y:134, $x:138, $start:8, $end:14);
+  @include weapon-direction(2,-2, $tx:1, $y:112, $x:138, $start:15, $end:20);
+  @include weapon-direction(4,-1, $tx:1, $y:100, $x:154, $start:21, $end:26);
+  @include weapon-direction(3,3, $tx:1, $y:94, $x:178, $start:27, $end:32);
+  @include weapon-direction(1,6, $tx:1, $y:112, $x:196, $start:33, $end:38);
+  @include weapon-direction(4,0, $tx:1, $y:148, $x:202, $start:39, $end:42);
+  @include weapon-direction(-1,-3, $tx:1, $y:146, $x:218, $start:43, $end:46);
+  @include weapon-direction(0,-3, $tx:1, $y:134, $x:214, $start:47, $end:52);
+  @include weapon-direction(2,-2, $tx:1, $y:112, $x:214, $start:53, $end:58);
+  @include weapon-direction(4,-1, $tx:1, $y:100, $x:230, $start:59, $end:64);
+  @include weapon-direction(3,3, $tx:1, $y:94, $x:254, $start:65, $end:68);
+  @include weapon-finish(69);
+}
+
+@keyframes weapon-downfork-short {
+  @include weapon-direction(2, 2, $y: 164, $end: 5);
+  @include weapon-direction(4, 0, $x: 146, $y: 174, $start: 6);
+  @include weapon-finish(31);
+}
+
+@keyframes weapon-downfork-mid {
+  @include weapon-direction(2, 0, $tx:1.5, $y: 164, $end: 2);
+  @include weapon-direction(-1,3, $tx:1.5, $y:166, $x:142, $start:4, $end:7);
+  @include weapon-direction(0,3, $tx:1.5, $y:178, $x:138, $start:8, $end:14);
+  @include weapon-direction(2,2, $tx:1.5, $y:200, $x:138, $start:15, $end:20);
+  @include weapon-direction(4,1, $tx:1.5, $y:212, $x:154, $start:21, $end:26);
+  @include weapon-direction(3,-3, $tx:1.5, $y:218, $x:178, $start:27, $end:32);
+  @include weapon-finish(49);
+}
+
+@keyframes weapon-downfork-mid2 {
+  @include weapon-direction(2, 0, $tx:1.5, $y: 164, $end: 2);
+  @include weapon-direction(-1,3, $tx:1.5, $y:166, $x:142, $start:4, $end:7);
+  @include weapon-direction(0,3, $tx:1.5, $y:178, $x:138, $start:8, $end:14);
+  @include weapon-direction(2,2, $tx:1.5, $y:200, $x:138, $start:15, $end:20);
+  @include weapon-direction(4,1, $tx:1.5, $y:212, $x:154, $start:21, $end:26);
+  @include weapon-direction(3,-3, $tx:1.5, $y:218, $x:178, $start:27, $end:32);
+  @include weapon-direction(1,-6, $tx:1.5, $y:200, $x:196, $start:33, $end:38);
+  @include weapon-direction(2,0, $tx:1.5, $y:164, $x:202, $start:39, $end:42);
+  @include weapon-finish(65);
+}
+
+@keyframes weapon-downfork-long {
+  @include weapon-direction(2, 0, $tx:1, $y: 164, $end: 2);
+  @include weapon-direction(-1,3, $tx:1, $y:166, $x:142, $start:4, $end:7);
+  @include weapon-direction(0,3, $tx:1, $y:178, $x:138, $start:8, $end:14);
+  @include weapon-direction(2,2, $tx:1, $y:200, $x:138, $start:15, $end:20);
+  @include weapon-direction(4,1, $tx:1, $y:212, $x:154, $start:21, $end:26);
+  @include weapon-direction(3,-3, $tx:1, $y:218, $x:178, $start:27, $end:32);
+  @include weapon-direction(1,-6, $tx:1, $y:200, $x:196, $start:33, $end:38);
+  @include weapon-direction(4,0, $tx:1, $y:164, $x:202, $start:39, $end:42);
+  @include weapon-direction(-1,3, $tx:1, $y:166, $x:218, $start:43, $end:46);
+  @include weapon-direction(0,3, $tx:1, $y:178, $x:214, $start:47, $end:52);
+  @include weapon-direction(2,2, $tx:1, $y:200, $x:214, $start:53, $end:58);
+  @include weapon-direction(4,1, $tx:1, $y:212, $x:230, $start:59, $end:64);
+  @include weapon-direction(3,-3, $tx:1, $y:218, $x:254, $start:65, $end:68);
+  @include weapon-finish(69);
+}
+
+#password span {
+  transform: scale(4);
+  image-rendering: pixelated;
+  width: 8px;
+  height: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+
+.banana-0 {
+  content: url("Banana1.png");
+}
+
+.banana-1 {
+  content: url("Banana2.png");
+}
+
+.banana-2 {
+  content: url("Banana3.png");
+}
+
+.banana-3 {
+  content: url("Banana4.png");
+}
