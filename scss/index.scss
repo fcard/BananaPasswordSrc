@@ -8,8 +8,9 @@
 body {
   background-color: black;
   color: white;
-  align-content: center;
   transform-origin: top left;
+  display: flex;
+  justify-content: center;
 }
 
 @mixin banana-border {
@@ -59,7 +60,7 @@ select {
 
 #main {
   max-width: 1200px;
-  margin-left: calc(50% - 600px);
+  height: 100%;
 }
 
 select {
