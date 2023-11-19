@@ -65,6 +65,7 @@ select {
 
 select {
   font-family: BananaPrince;
+  color: black;
 }
 
 #title {
@@ -142,10 +143,14 @@ select {
 }
 
 #world-map-img {
+  width: 256px;
+  height: 240px;
   @include banana-border;
 }
 
 #level-view-img {
+  width: 256px;
+  height: 240px;
   @include banana-border;
 }
 
@@ -180,12 +185,17 @@ select {
 }
 
 #weapon-name {
+  width: 80px;
+  height: 40px;
+  position: absolute;
+}
+
+#weapon-name span {
+  transform: translate(40px, 201px);
   font-family: BananaPrince;
+  position: absolute;
   font-size: 7px;
   color: black;
-  width: 80px;
-  position: absolute;
-  transform: translate(40px, 202px);
 }
 
 #prince-lv {
@@ -292,7 +302,9 @@ select {
 
 #weapon-sprites {
   position: fixed;
-  clip-path: inset(196px 264px);
+  clip-path: border-box;
+  width: 264px;
+  height: 196px;
 }
 
 @mixin weapon-animation($type, $direction, $duration) {

@@ -4,11 +4,13 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
-gloo-events = "*"
+attrs = { path = "./proc_macros/attrs" }
+with_length = { path = "./proc_macros/with_length" }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+yew = { git = "https://github.com/yewstack/yew/", features = ["csr"]}
+gloo-events = { version = "*" }
 wasm-bindgen = "0.2"
 web-sys = { version = "0.3", features = [
  "HtmlElement", "HtmlSelectElement", "HtmlInputElement", "Node"] }
-attrs = { path = "./proc_macros/attrs" }
-with_length = { path = "./proc_macros/with_length" }
 

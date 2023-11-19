@@ -1,5 +1,5 @@
 use attrs::*;
-use with_length::*;
+#[web] use with_length::*;
 use super::weapon::*;
 
 #[web]
